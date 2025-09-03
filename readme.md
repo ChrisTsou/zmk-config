@@ -1,8 +1,7 @@
 # urob's zmk-config
 
 This is my personal [ZMK firmware](https://github.com/zmkfirmware/zmk/)
-configuration. It consists of a 34-keys base layout that is re-used for various
-boards, including my Corneish Zen and my Planck.
+configuration for the Glove80 keyboard.
 
 My configuration currently builds against `v0.3` of upstream ZMK.
 Custom functionality is added through various
@@ -335,9 +334,9 @@ shield combinations listed there.
 
 To only build the firmware for a specific target, use `just build <target>`.
 This will build the firmware for all matching board and shield combinations. For
-instance, to build the firmware for my Corneish Zen, I can type
-`just build zen`, which builds both `corneish_zen_v2_left` and
-`corneish_zen_v2_right`. (`just list` shows all valid build targets.)
+instance, to build the firmware for the Glove80, type
+`just build glove80`, which builds both `glove80_lh` and
+`glove80_rh`. (`just list` shows all valid build targets.)
 
 Additional arguments to `just build` are passed on to `west`. For instance, a
 pristine build can be triggered with `just build all -p`.
@@ -397,8 +396,6 @@ remaining issues:
   workaround, I implemented all homerow combos as homerow-mod-combos. This is
   good enough for day-to-day, but does not address all edge cases (eg changing
   active mods).
-- Very minor: `&bootloader` doesn't work with stm32 boards like the Planck
-  ([#1086](https://github.com/zmkfirmware/zmk/issues/1086))
 
 ## Related resources
 

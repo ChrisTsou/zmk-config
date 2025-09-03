@@ -26,10 +26,13 @@ manifest:
       url-base: https://github.com/urob
     - name: zmkfirmware
       url-base: https://github.com/zmkfirmware
+    - name: moergo
+      url-base: https://github.com/moergo-sc
 
   projects:
     - name: zmk
-      remote: zmkfirmware
+      remote: moergo
+      revision: v25.08
       import: app/west.yml
 
     # ZMK modules
