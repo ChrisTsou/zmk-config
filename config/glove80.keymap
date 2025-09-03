@@ -3,7 +3,7 @@
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/rgb.h>
 #include <dt-bindings/zmk/outputs.h>
-#include <zmk-helpers/helper.h>
+#include "zmk-helpers/key-labels/glove80.h"
 #include "bluetooth.dtsi"
 
 // Layer definitions
@@ -77,7 +77,15 @@
             #binding-cells = <2>;
             flavor = "tap-preferred";
             tapping-term-ms = <200>;
-            bindings = <&mo>, <&rgb_ug>;
+            bindings = <&mo>, <&rgb_ug_status_macro>;
+        };
+    };
+
+    macros {
+        rgb_ug_status_macro: rgb_ug_status_macro {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&rgb_ug RGB_STATUS>;
         };
     };
 
