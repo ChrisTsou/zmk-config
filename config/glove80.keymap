@@ -113,8 +113,30 @@
     };
 };
 
-// Cancel key - cancels caps-word, sticky keys/layers (caps-lock requires manual toggle)
-#define CANCEL &kp K_CANCEL
+/*
+ * ═══════════════════════════════════════════════════════════════
+ * ENHANCED CANCEL - Cancel all states and return to base layer
+ * ═══════════════════════════════════════════════════════════════
+ * Cancels caps-word, sticky keys/layers, auto-layers AND returns to base layer
+ * ═══════════════════════════════════════════════════════════════
+ */
+#define CANCEL &cancel_macro
+ZMK_MACRO(cancel_macro, bindings = <&kp K_CANCEL &to BASE>; wait-ms = <0>; tap-ms = <5>;)
+
+// Symbol key list for auto-layer continue behavior
+#define SYMBOLS EXCL AT HASH DLLR PRCNT CARET AMPS STAR LPAR RPAR \
+                MINUS UNDER EQUAL PLUS LBKT RBKT LBRC RBRC BSLH PIPE \
+                SEMI COLON SQT DQT COMMA LT DOT GT FSLH QMARK GRAVE TILDE
+
+/*
+ * ═══════════════════════════════════════════════════════════════
+ * CUSTOM AUTO-LAYER - Only deactivates on space/escape/cancel
+ * ═══════════════════════════════════════════════════════════════
+ */
+ZMK_AUTO_LAYER(custom_auto, 
+    ignore-alphas; ignore-numbers; ignore-modifiers;
+    continue-list = <SYMBOLS>;)
+#define CUSTOM_AUTO &custom_auto
 
 /*
  * ═══════════════════════════════════════════════════════════════
@@ -131,7 +153,7 @@ ZMK_MOD_MORPH(shift_morph, bindings = <&shift_tap_dance>, <&kp CAPS>;
               mods = <(MOD_LSFT|MOD_RSFT)>; keep-mods = <(MOD_LSFT|MOD_RSFT)>;)
 ZMK_TAP_DANCE(shift_tap_dance, bindings = <&sk LSHFT>, <&caps_word>;
               tapping-term-ms = <500>;)
-
+              
 / {
     keymap {
         compatible = "zmk,keymap";
