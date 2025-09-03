@@ -77,6 +77,15 @@ min-urob-zmk/
 - Justfile provides convenient build recipes (`just build glove80`, `just list`)
 - Nix + direnv development environment for reproducible builds
 
+## Current Project State
+
+**Personal Configuration Status**: Building minimal Glove80-only config from scratch
+- Original urob config preserved in `config-urob/` for reference  
+- New personal config in `config/` with modular bluetooth behaviors
+- Using `zmk-helpers` key position definitions (LT0, LM0, etc.) for portability
+
+**Known Issues**: Just recipes fixed for WSL (XDG_RUNTIME_DIR=/tmp in flake.nix)
+
 ## Auto-Update Instructions
 
 ### Automatic CLAUDE.md Updates

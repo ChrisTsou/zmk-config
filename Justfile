@@ -1,3 +1,4 @@
+# TODO: Rethink build system - shell shebangs vs explicit shell settings, bash dependency management
 default:
     @just --list --unsorted
 

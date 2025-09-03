@@ -51,6 +51,8 @@
           shellHook = ''
             export ZMK_BUILD_DIR=$(pwd)/.build;
             export ZMK_SRC_DIR=$(pwd)/zmk/app;
+            # Fix Just shebang "Permission denied" errors on WSL by using /tmp as runtime dir
+            export XDG_RUNTIME_DIR=/tmp;
           '';
         };
       }
