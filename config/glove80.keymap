@@ -32,6 +32,39 @@
 #define KEYS_R RT0 RT1 RT2 RT3 RT4 RT5 RM0 RM1 RM2 RM3 RM4 RM5 RB0 RB1 RB2 RB3 RB4 RB5
 #define THUMBS LH0 LH1 LH2 LH3 LH4 LH5 RH0 RH1 RH2 RH3 RH4 RH5
 
+/* Troubleshooting
+
+    Noticeable delay when tapping HRMs: Increase require-prior-idle-ms. As a rule of thumb, you want to set it to at least 10500/x where x is your (relaxed) WPM for English prose.3
+    False negatives (same-hand): Reduce tapping-term-ms (or disable hold-trigger-key-positions)
+    False negatives (cross-hand): Reduce require-prior-idle-ms (or set flavor to hold-preferred -- to continue using hold-trigger-on-release, you must apply this patch to ZMK
+    False positives (same-hand): Increase tapping-term-ms
+    False positives (cross-hand): Increase require-prior-idle-ms (or set flavor to tap-preferred, which requires holding HRMs past tapping term to activate)
+*/
+#define TAP_TERM          150
+#define PRIOR_IDLE        150
+#define QUICK_TAP         200
+
+#define HOMEROW_FLAVOR    "balanced"
+#define THUMB_FLAVOR      "balanced"
+
+#define PINKY_TAP_TERM    (TAP_TERM + 130)
+#define RING_TAP_TERM     (TAP_TERM + 90)
+#define MIDDLE_TAP_TERM   (TAP_TERM + 60)
+#define INDEX_TAP_TERM    (TAP_TERM + 40)
+#define THUMB_TAP_TERM    (TAP_TERM + 50)
+
+#define PINKY_PRIOR_IDLE  (PRIOR_IDLE)
+#define RING_PRIOR_IDLE   (PRIOR_IDLE)
+#define MIDDLE_PRIOR_IDLE (PRIOR_IDLE)
+#define INDEX_PRIOR_IDLE  (PRIOR_IDLE)
+#define THUMB_PRIOR_IDLE  (PRIOR_IDLE - 50)
+
+#define PINKY_QUICK_TAP   (QUICK_TAP)
+#define RING_QUICK_TAP    (QUICK_TAP)
+#define MIDDLE_QUICK_TAP  (QUICK_TAP)
+#define INDEX_QUICK_TAP   (QUICK_TAP)
+#define THUMB_QUICK_TAP   (QUICK_TAP + 50)
+
 / {
     behaviors {
         // Left homerow mods
@@ -39,9 +72,9 @@
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "balanced";
-            tapping-term-ms = <280>;
-            quick-tap-ms = <175>;
-            require-prior-idle-ms = <150>;
+            tapping-term-ms = <TAP_TERM>;
+            quick-tap-ms = <QUICK_TAP>;
+            require-prior-idle-ms = <PRIOR_IDLE>;
             bindings = <&kp>, <&kp>;
             hold-trigger-key-positions = <KEYS_R THUMBS>;
             hold-trigger-on-release;
@@ -52,9 +85,9 @@
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "balanced";
-            tapping-term-ms = <280>;
-            quick-tap-ms = <175>;
-            require-prior-idle-ms = <150>;
+            tapping-term-ms = <TAP_TERM>;
+            quick-tap-ms = <QUICK_TAP>;
+            require-prior-idle-ms = <PRIOR_IDLE>;
             bindings = <&kp>, <&kp>;
             hold-trigger-key-positions = <KEYS_L THUMBS>;
             hold-trigger-on-release;
@@ -65,9 +98,9 @@
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "balanced";
-            tapping-term-ms = <280>;
-            quick-tap-ms = <175>;
-            require-prior-idle-ms = <150>;
+            tapping-term-ms = <TAP_TERM>;
+            quick-tap-ms = <QUICK_TAP>;
+            require-prior-idle-ms = <PRIOR_IDLE>;
             bindings = <&mo>, <&kp>;
             // hold-trigger-key-positions = <KEYS_R THUMBS>;
             // hold-trigger-on-release;
@@ -77,9 +110,9 @@
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "balanced";
-            tapping-term-ms = <280>;
-            quick-tap-ms = <175>;
-            require-prior-idle-ms = <150>;
+            tapping-term-ms = <TAP_TERM>;
+            quick-tap-ms = <QUICK_TAP>;
+            require-prior-idle-ms = <PRIOR_IDLE>;
             bindings = <&mo>, <&kp>;
             // hold-trigger-key-positions = <KEYS_L THUMBS>;
             // hold-trigger-on-release;
