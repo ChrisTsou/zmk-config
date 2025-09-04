@@ -243,12 +243,12 @@ XXX           &kp SQT         &kp MINUS       &kp EQUAL        &kp DOT          
 
         layer_Symbol {
             bindings = <
-    XXX         XXX         XXX         XXX         XXX                                                                              XXX         XXX        XXX         XXX         XXX   
-    XXX         XXX         XXX         XXX         XXX         XXX                                                         XXX        XXX         XXX        XXX         XXX         XXX   
-    ___   &kp LBKT   &kp LBRC   &kp PIPE  &kp QMARK   &kp HASH                                                   &kp DLLR  &kp STAR   &kp AMPS  &kp RBRC   &kp RBKT      ___
- &kp SEMI  &kp TILDE     &kp LT   &kp LPAR   &kp FSLH  &kp COMMA                                                    &kp DQT  &kp EXCL   &kp RPAR    &kp GT  &kp CARET  &kp GRAVE
-    XXX       &kp SQT  &kp MINUS  &kp EQUAL    &kp DOT     &kp AT  ___      ___      ___      ___      ___      ___     &kp PRCNT   &kp DOT  &kp COLON  &kp PLUS  &kp UNDER      XXX   
-    XXX         XXX         XXX        ___       ___                 ___      ___      ___      ___      ___      ___                   ___        ___        XXX         XXX         XXX   
+XXX       XXX        XXX        XXX        XXX                                                                XXX       XXX        XXX       XXX        XXX   
+XXX       XXX        XXX        XXX        XXX        XXX                                           XXX       XXX       XXX        XXX       XXX        XXX   
+XXX       &kp LBKT   &kp LBRC   &kp PIPE   &kp QMARK  &kp HASH                                      &kp DLLR  &kp STAR  &kp AMPS   &kp RBRC  &kp RBKT   XXX
+&kp SEMI  &kp TILDE  &kp LT     &kp LPAR   &kp FSLH   &kp COMMA                                     &kp DQT   &kp EXCL  &kp RPAR   &kp GT    &kp CARET  &kp GRAVE
+XXX       &kp SQT    &kp MINUS  &kp EQUAL  &kp DOT    &kp AT     &kp BSLH  ___  ___  ___  ___  ___  &kp PRCNT &kp DOT   &kp COLON  &kp PLUS  &kp UNDER  XXX   
+XXX       XXX        XXX        ___        ___                   ___       ___  ___  ___  ___  ___            ___       ___        XXX       XXX        XXX   
             >;
         };
 
