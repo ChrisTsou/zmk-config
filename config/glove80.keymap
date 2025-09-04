@@ -1,5 +1,4 @@
 #include <behaviors.dtsi>
-#include <behaviors/num_word.dtsi>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/rgb.h>
@@ -11,7 +10,7 @@
 // Layer definitions
 #define BASE 0
 #define SYM  1
-#define NUM  2
+#define ASSNUM  2
 #define NAV  3
 #define FUN  4
 #define MGC  5
@@ -62,7 +61,7 @@
         };
 
         // Layer tap behaviors
-        lt_l: layer_tap_left {
+        ltl: layer_tap_left {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "balanced";
@@ -70,11 +69,11 @@
             quick-tap-ms = <175>;
             require-prior-idle-ms = <150>;
             bindings = <&mo>, <&kp>;
-            hold-trigger-key-positions = <KEYS_R THUMBS>;
-            hold-trigger-on-release;
+            // hold-trigger-key-positions = <KEYS_R THUMBS>;
+            // hold-trigger-on-release;
         };
 
-        lt_r: layer_tap_right {
+        ltr: layer_tap_right {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "balanced";
@@ -82,8 +81,8 @@
             quick-tap-ms = <175>;
             require-prior-idle-ms = <150>;
             bindings = <&mo>, <&kp>;
-            hold-trigger-key-positions = <KEYS_L THUMBS>;
-            hold-trigger-on-release;
+            // hold-trigger-key-positions = <KEYS_L THUMBS>;
+            // hold-trigger-on-release;
         };
 
         magic: magic_hold_tap {
@@ -133,10 +132,10 @@ ZMK_MACRO(cancel_macro, bindings = <&kp K_CANCEL &to BASE>; wait-ms = <0>; tap-m
  * CUSTOM AUTO-LAYER - Only deactivates on space/escape/cancel
  * ═══════════════════════════════════════════════════════════════
  */
-ZMK_AUTO_LAYER(custom_auto, 
+ZMK_AUTO_LAYER(c_auto, 
     ignore-alphas; ignore-numbers; ignore-modifiers;
-    continue-list = <SYMBOLS>;)
-#define CUSTOM_AUTO &custom_auto
+    continue-list = <SYMBOLS BSPC DEL TAB RET INS CAPS SPACE>;)
+#define C_AUTO &c_auto
 
 /*
  * ═══════════════════════════════════════════════════════════════
@@ -160,34 +159,34 @@ ZMK_TAP_DANCE(shift_tap_dance, bindings = <&sk LSHFT>, <&caps_word>;
 
         base_layer {
             bindings = <
-&none           &none           &none           &none           &none                                                                                                           &none           &none           &none           &none           &none
-&none           &kp N1          &kp N2          &kp N3          &kp N4          &kp N5                                                                              &kp N6      &kp N7          &kp N8          &kp N9          &kp N0          &none
-&sk LSHFT       &kp Z           &kp Y           &kp U           &kp O           &kp SEMI                                                                            &kp Q       &kp L           &kp D           &kp P           &kp X           &sk RSHFT
-&kp W           &hml LGUI C     &hml LALT I     &hml LCTRL E    &hml LSHFT A    &kp COMMA                                                                           &kp K       &hmr RSHFT H    &hmr RCTRL T    &hmr RALT N     &hmr RGUI S     &kp F
-&sk LSHFT       &kp SQT         &kp MINUS       &kp EQUAL       &kp DOT         &kp FSLH    &lt_l FUN ESC   &kp TAB     &lt_l NAV INS &kp CAPS &none    &kp RET         &kp J       &kp M           &kp G           &kp B           &kp V           &sk RSHFT
-&magic MGC 0    &kp BSLH        &kp LPAR        &kp RPAR        &kp GRAVE                   &lt_l NUM SPACE MAGIC_SHIFT CANCEL        &kp DEL  &kp BSPC &lt_r SYM R                 &kp LBKT        &kp LBRC        &kp RBRC        &kp RBKT        &magic MGC 0
+&none         &none        &none        &none         &none                                                                                                          &none         &none         &none        &none        &none
+&none         &none        &none        &none         &none         &none                                                                                     &none  &none         &none         &none        &none        &none
+CANCEL         &kp Z        &kp Y        &kp U         &kp O         &kp SEMI                                                                                 &kp Q  &kp L         &kp D         &kp P        &kp X        CANCEL
+&kp W         &hml LGUI C  &hml LALT I  &hml LCTRL E  &hml LSHFT A  &kp COMMA                                                                                 &kp K  &hmr RSHFT H  &hmr RCTRL T  &hmr RALT N  &hmr RGUI S  &kp F
+&none         &kp SQT      &kp MINUS    &kp EQUAL     &kp DOT       &kp FSLH   &ltl FUN ESC       &kp TAB  &ltl NAV INS  &none  &none        &kp RET    &kp J  &kp M         &kp G         &kp B        &kp V        &none
+&magic MGC 0  &none        &none        &kp BSPC      &kp DEL                  &ltl ASSNUM SPACE  &none    XXX           &none  MAGIC_SHIFT  &ltr SYM R           &kp DEL       &kp BSPC      &none        &none        &magic MGC 0
             >;
         };
 
-        symbol_layer {
+        layer_Symbol {
             bindings = <
-                &none     &none      &none      &none      &none                                                                           &none      &none      &none     &none   &none
-                &kp GRAVE &kp RBKT   &kp LPAR   &kp RPAR   &kp COMMA   &kp DOT                                                  &none      &none      &none      &none     &none   &none
-                &kp LBKT  &kp EXCL   &kp LBRC   &kp RBRC   &kp SEMI    &kp QMARK                                            &kp GRAVE  &kp RSHFT  &kp RCTRL   &kp RALT  &kp RGUI   &none
-                &kp HASH  &kp CARET  &kp EQUAL  &kp UNDER  &kp DLLR    &kp STAR                                               &kp DQT   &kp BSPC    &kp TAB  &kp SPACE   &kp RET   &none
-                &kp TILDE &kp LT     &kp PIPE   &kp MINUS  &kp GT      &kp FSLH   &kp BSLH    &kp DOT  &kp STAR   &none   &none   &none    &kp SQT    &kp DEL      &none    &kp INS   &kp ESC   &none
-                &none     &kp AMPS   &kp SQT    &kp DQT    &kp PLUS               &kp PRCNT  &kp COLON    &kp AT   &none   &none   &none                 &none      &none      &none     &none   &none
+    &none      &none      &none      &none      &none                                                                           &none      &none     &none      &none      &none
+    &none      &none      &none      &none      &none      &none                                                      &none     &none      &none     &none      &none      &none
+    ___   &kp LBKT   &kp LBRC   &kp PIPE  &kp QMARK   &kp HASH                                                   &kp DLLR  &kp STAR   &kp AMPS  &kp RBRC   &kp RBKT      ___
+ &kp SEMI  &kp TILDE     &kp LT   &kp LPAR   &kp FSLH  &kp COMMA                                                    &kp DQT  &kp EXCL   &kp RPAR    &kp GT  &kp CARET  &kp GRAVE
+    &none    &kp SQT  &kp MINUS  &kp EQUAL    &kp DOT     &kp AT  &trans   &trans   &trans   &trans   &trans   &trans  &kp PRCNT   &kp DOT  &kp COLON  &kp PLUS  &kp UNDER      &none
+    &none      &none      &none     &trans    &trans              &trans   &trans   &trans   &trans   &trans   &trans                &trans     &trans     &none      &none      &none
             >;
         };
 
-        number_layer {
+        layer_Assnum {
             bindings = <
-                &none     &none     &none      &none      &none                                                                        &none     &none      &none      &none      &none
-                &none     &none     &none      &none      &none   &none                                                      &none  &kp HASH  &kp DLLR  &kp CARET  &kp TILDE   &kp EXCL
-                &none     &none     &none      &none      &none   &none                                                      &none    &kp N7    &kp N8     &kp N9  &kp COLON  &kp PRCNT
-                &none  &kp LGUI  &kp LALT  &kp LCTRL  &kp LSHFT   &none                                                  &kp UNDER    &kp N4    &kp N5     &kp N6  &kp MINUS   &kp PLUS
-                &none     &none     &none      &none      &none   &none   &none   &none   &none     &kp LT   &kp GT  &kp COMMA      &none    &kp N1    &kp N2     &kp N3   &kp FSLH   &kp STAR
-                &none     &none     &none      &none      &none           &none   &none   &none  &kp EQUAL  &kp DOT     &kp N0               &trans    &trans     &trans     &trans     &kp AT
+     &none      &none      &none     &none      &none                                                                         &none   &none   &none     &none   &none
+     &none      &none      &none     &none      &none      &none                                                      &none   &none   &none   &none     &none   &none
+ &kp COLON  &kp PRCNT   &kp FSLH  &kp STAR  &kp UNDER      &none                                                      &kp O   &kp N7  &kp N8  &kp N9  &kp DLLR   &none
+ &kp TILDE   &kp EXCL     &kp LT    &kp GT  &kp EQUAL  &kp COMMA                                                      &kp X   &kp N4  &kp N5  &kp N6  &kp HASH   &none
+     &none  &kp CARET  &kp MINUS  &kp PLUS    &kp DOT      &none  &trans   &trans   &trans   &trans   &trans   &trans   &kp B   &kp N1  &kp N2  &kp N3    &kp AT   &none
+     &none   &kp PIPE   &kp AMPS    &trans     &trans             &trans   &trans   &trans   &trans   &trans   &kp N0   &trans  &trans   &none     &none   &none
             >;
         };
 
