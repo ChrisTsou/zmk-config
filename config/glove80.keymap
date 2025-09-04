@@ -15,11 +15,8 @@
 #define FUN  4
 #define MGC  5
 
-#define XXX &none
-#define ___ &trans
-
-// Global settings
-#define QUICK_TAP_MS 175
+#define XXX &none   
+#define ___ &trans   
 
 // Configure sticky key behavior
 &sk {
@@ -65,59 +62,102 @@
 #define INDEX_QUICK_TAP   (QUICK_TAP)
 #define THUMB_QUICK_TAP   (QUICK_TAP + 50)
 
+/*
+ * Per-finger hold-tap behaviors using urob's helpers
+ * Each finger gets optimized timing based on finger strength and dexterity
+ */
+
+// Left hand hold-taps (generic)
+ZMK_HOLD_TAP(ht_l_p, 
+    bindings = <&kp>, <&kp>; 
+    flavor = HOMEROW_FLAVOR; 
+    tapping-term-ms = <PINKY_TAP_TERM>;
+    quick-tap-ms = <PINKY_QUICK_TAP>; 
+    require-prior-idle-ms = <PINKY_PRIOR_IDLE>;
+    hold-trigger-key-positions = <KEYS_R THUMBS>; 
+    hold-trigger-on-release;)
+
+ZMK_HOLD_TAP(ht_l_r,
+    bindings = <&kp>, <&kp>;
+    flavor = HOMEROW_FLAVOR; 
+    tapping-term-ms = <RING_TAP_TERM>;
+    quick-tap-ms = <RING_QUICK_TAP>; 
+    require-prior-idle-ms = <RING_PRIOR_IDLE>;
+    hold-trigger-key-positions = <KEYS_R THUMBS>; 
+    hold-trigger-on-release;)
+
+ZMK_HOLD_TAP(ht_l_m,
+    bindings = <&kp>, <&kp>;
+    flavor = HOMEROW_FLAVOR; 
+    tapping-term-ms = <MIDDLE_TAP_TERM>;
+    quick-tap-ms = <MIDDLE_QUICK_TAP>; 
+    require-prior-idle-ms = <MIDDLE_PRIOR_IDLE>;
+    hold-trigger-key-positions = <KEYS_R THUMBS>; 
+    hold-trigger-on-release;)
+
+ZMK_HOLD_TAP(ht_l_i,
+    bindings = <&kp>, <&kp>;
+    flavor = HOMEROW_FLAVOR; 
+    tapping-term-ms = <INDEX_TAP_TERM>;
+    quick-tap-ms = <INDEX_QUICK_TAP>; 
+    require-prior-idle-ms = <INDEX_PRIOR_IDLE>;
+    hold-trigger-key-positions = <KEYS_R THUMBS>; 
+    hold-trigger-on-release;)
+
+// Right hand hold-taps (generic)
+ZMK_HOLD_TAP(ht_r_i,
+    bindings = <&kp>, <&kp>;
+    flavor = HOMEROW_FLAVOR; 
+    tapping-term-ms = <INDEX_TAP_TERM>;
+    quick-tap-ms = <INDEX_QUICK_TAP>; 
+    require-prior-idle-ms = <INDEX_PRIOR_IDLE>;
+    hold-trigger-key-positions = <KEYS_L THUMBS>; 
+    hold-trigger-on-release;)
+
+ZMK_HOLD_TAP(ht_r_m,
+    bindings = <&kp>, <&kp>;
+    flavor = HOMEROW_FLAVOR; 
+    tapping-term-ms = <MIDDLE_TAP_TERM>;
+    quick-tap-ms = <MIDDLE_QUICK_TAP>; 
+    require-prior-idle-ms = <MIDDLE_PRIOR_IDLE>;
+    hold-trigger-key-positions = <KEYS_L THUMBS>; 
+    hold-trigger-on-release;)
+
+ZMK_HOLD_TAP(ht_r_r,
+    bindings = <&kp>, <&kp>;
+    flavor = HOMEROW_FLAVOR; 
+    tapping-term-ms = <RING_TAP_TERM>;
+    quick-tap-ms = <RING_QUICK_TAP>; 
+    require-prior-idle-ms = <RING_PRIOR_IDLE>;
+    hold-trigger-key-positions = <KEYS_L THUMBS>; 
+    hold-trigger-on-release;)
+
+ZMK_HOLD_TAP(ht_r_p,
+    bindings = <&kp>, <&kp>;
+    flavor = HOMEROW_FLAVOR; 
+    tapping-term-ms = <PINKY_TAP_TERM>;
+    quick-tap-ms = <PINKY_QUICK_TAP>; 
+    require-prior-idle-ms = <PINKY_PRIOR_IDLE>;
+    hold-trigger-key-positions = <KEYS_L THUMBS>; 
+    hold-trigger-on-release;)
+
+// Thumb layer-taps
+ZMK_HOLD_TAP(lt_l_t,
+    bindings = <&mo>, <&kp>;
+    flavor = THUMB_FLAVOR; 
+    tapping-term-ms = <THUMB_TAP_TERM>;
+    quick-tap-ms = <THUMB_QUICK_TAP>; 
+    require-prior-idle-ms = <THUMB_PRIOR_IDLE>;)
+
+ZMK_HOLD_TAP(lt_r_t,
+    bindings = <&mo>, <&kp>;
+    flavor = THUMB_FLAVOR; 
+    tapping-term-ms = <THUMB_TAP_TERM>;
+    quick-tap-ms = <THUMB_QUICK_TAP>; 
+    require-prior-idle-ms = <THUMB_PRIOR_IDLE>;)
+
 / {
     behaviors {
-        // Left homerow mods
-        hml: homerow_mods_left {
-            compatible = "zmk,behavior-hold-tap";
-            #binding-cells = <2>;
-            flavor = "balanced";
-            tapping-term-ms = <TAP_TERM>;
-            quick-tap-ms = <QUICK_TAP>;
-            require-prior-idle-ms = <PRIOR_IDLE>;
-            bindings = <&kp>, <&kp>;
-            hold-trigger-key-positions = <KEYS_R THUMBS>;
-            hold-trigger-on-release;
-        };
-
-        // Right homerow mods  
-        hmr: homerow_mods_right {
-            compatible = "zmk,behavior-hold-tap";
-            #binding-cells = <2>;
-            flavor = "balanced";
-            tapping-term-ms = <TAP_TERM>;
-            quick-tap-ms = <QUICK_TAP>;
-            require-prior-idle-ms = <PRIOR_IDLE>;
-            bindings = <&kp>, <&kp>;
-            hold-trigger-key-positions = <KEYS_L THUMBS>;
-            hold-trigger-on-release;
-        };
-
-        // Layer tap behaviors
-        ltl: layer_tap_left {
-            compatible = "zmk,behavior-hold-tap";
-            #binding-cells = <2>;
-            flavor = "balanced";
-            tapping-term-ms = <TAP_TERM>;
-            quick-tap-ms = <QUICK_TAP>;
-            require-prior-idle-ms = <PRIOR_IDLE>;
-            bindings = <&mo>, <&kp>;
-            // hold-trigger-key-positions = <KEYS_R THUMBS>;
-            // hold-trigger-on-release;
-        };
-
-        ltr: layer_tap_right {
-            compatible = "zmk,behavior-hold-tap";
-            #binding-cells = <2>;
-            flavor = "balanced";
-            tapping-term-ms = <TAP_TERM>;
-            quick-tap-ms = <QUICK_TAP>;
-            require-prior-idle-ms = <PRIOR_IDLE>;
-            bindings = <&mo>, <&kp>;
-            // hold-trigger-key-positions = <KEYS_L THUMBS>;
-            // hold-trigger-on-release;
-        };
-
         magic: magic_hold_tap {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
@@ -180,7 +220,7 @@ ZMK_AUTO_LAYER(c_auto,
 #define MAGIC_SHIFT &magic_shift LSHFT 0
 ZMK_HOLD_TAP(magic_shift, bindings = <&kp>, <&shift_morph>;
              flavor = "balanced"; tapping-term-ms = <200>;
-             quick-tap-ms = <QUICK_TAP_MS>;)
+             quick-tap-ms = <THUMB_QUICK_TAP>;)
 ZMK_MOD_MORPH(shift_morph, bindings = <&shift_tap_dance>, <&kp CAPS>;
               mods = <(MOD_LSFT|MOD_RSFT)>; keep-mods = <(MOD_LSFT|MOD_RSFT)>;)
 ZMK_TAP_DANCE(shift_tap_dance, bindings = <&sk LSHFT>, <&caps_word>;
@@ -192,67 +232,67 @@ ZMK_TAP_DANCE(shift_tap_dance, bindings = <&sk LSHFT>, <&caps_word>;
 
         base_layer {
             bindings = <
-&none         &none        &none        &none         &none                                                                                                          &none         &none         &none        &none        &none
-&none         &none        &none        &none         &none         &none                                                                                     &none  &none         &none         &none        &none        &none
-CANCEL         &kp Z        &kp Y        &kp U         &kp O         &kp SEMI                                                                                 &kp Q  &kp L         &kp D         &kp P        &kp X        CANCEL
-&kp W         &hml LGUI C  &hml LALT I  &hml LCTRL E  &hml LSHFT A  &kp COMMA                                                                                 &kp K  &hmr RSHFT H  &hmr RCTRL T  &hmr RALT N  &hmr RGUI S  &kp F
-&none         &kp SQT      &kp MINUS    &kp EQUAL     &kp DOT       &kp FSLH   &ltl FUN ESC       &kp TAB  &ltl NAV INS  &none  &none        &kp RET    &kp J  &kp M         &kp G         &kp B        &kp V        &none
-&magic MGC 0  &none        &none        &kp BSPC      &kp DEL                  &ltl ASSNUM SPACE  &none    XXX           &none  MAGIC_SHIFT  &ltr SYM R           &kp DEL       &kp BSPC      &none        &none        &magic MGC 0
+XXX           XXX             XXX             XXX              XXX                                                                                                                         XXX              XXX              XXX             XXX             XXX   
+XXX           XXX             XXX             XXX              XXX              XXX                                                                                               XXX      XXX              XXX              XXX             XXX             XXX   
+XXX           &kp Z           &kp Y           &kp U            &kp O            &kp SEMI                                                                                          &kp Q    &kp L            &kp D            &kp P           &kp X           XXX   
+&kp W         &ht_l_p LGUI C  &ht_l_r LALT I  &ht_l_m LCTRL E  &ht_l_i LSHFT A  &kp COMMA                                                                                         &kp K    &ht_r_i RSHFT H  &ht_r_m RCTRL T  &ht_r_r RALT N  &ht_r_p RGUI S  &kp F
+XXX           &kp SQT         &kp MINUS       &kp EQUAL        &kp DOT          &kp FSLH    &lt_l_t FUN ESC       XXX        XXX              XXX     XXX          &kp RET        &kp J    &kp M            &kp G            &kp B           &kp V           XXX   
+&magic MGC 0  XXX             XXX             &kp BSPC         &kp DEL                      &lt_l_t ASSNUM SPACE  &kp TAB    &lt_l_t NAV INS  XXX     MAGIC_SHIFT  &lt_r_t SYM R           &kp DEL          &kp BSPC         XXX             XXX             &magic MGC 0
             >;
         };
 
         layer_Symbol {
             bindings = <
-    &none      &none      &none      &none      &none                                                                           &none      &none     &none      &none      &none
-    &none      &none      &none      &none      &none      &none                                                      &none     &none      &none     &none      &none      &none
+    XXX         XXX         XXX         XXX         XXX                                                                              XXX         XXX        XXX         XXX         XXX   
+    XXX         XXX         XXX         XXX         XXX         XXX                                                         XXX        XXX         XXX        XXX         XXX         XXX   
     ___   &kp LBKT   &kp LBRC   &kp PIPE  &kp QMARK   &kp HASH                                                   &kp DLLR  &kp STAR   &kp AMPS  &kp RBRC   &kp RBKT      ___
  &kp SEMI  &kp TILDE     &kp LT   &kp LPAR   &kp FSLH  &kp COMMA                                                    &kp DQT  &kp EXCL   &kp RPAR    &kp GT  &kp CARET  &kp GRAVE
-    &none    &kp SQT  &kp MINUS  &kp EQUAL    &kp DOT     &kp AT  &trans   &trans   &trans   &trans   &trans   &trans  &kp PRCNT   &kp DOT  &kp COLON  &kp PLUS  &kp UNDER      &none
-    &none      &none      &none     &trans    &trans              &trans   &trans   &trans   &trans   &trans   &trans                &trans     &trans     &none      &none      &none
+    XXX       &kp SQT  &kp MINUS  &kp EQUAL    &kp DOT     &kp AT  ___      ___      ___      ___      ___      ___     &kp PRCNT   &kp DOT  &kp COLON  &kp PLUS  &kp UNDER      XXX   
+    XXX         XXX         XXX        ___       ___                 ___      ___      ___      ___      ___      ___                   ___        ___        XXX         XXX         XXX   
             >;
         };
 
         layer_Assnum {
             bindings = <
-     &none      &none      &none     &none      &none                                                                         &none   &none   &none     &none   &none
-     &none      &none      &none     &none      &none      &none                                                      &none   &none   &none   &none     &none   &none
- &kp COLON  &kp PRCNT   &kp FSLH  &kp STAR  &kp UNDER      &none                                                      &kp O   &kp N7  &kp N8  &kp N9  &kp DLLR   &none
- &kp TILDE   &kp EXCL     &kp LT    &kp GT  &kp EQUAL  &kp COMMA                                                      &kp X   &kp N4  &kp N5  &kp N6  &kp HASH   &none
-     &none  &kp CARET  &kp MINUS  &kp PLUS    &kp DOT      &none  &trans   &trans   &trans   &trans   &trans   &trans   &kp B   &kp N1  &kp N2  &kp N3    &kp AT   &none
-     &none   &kp PIPE   &kp AMPS    &trans     &trans             &trans   &trans   &trans   &trans   &trans   &kp N0   &trans  &trans   &none     &none   &none
+     XXX         XXX         XXX        XXX         XXX                                                                            XXX      XXX      XXX        XXX      XXX   
+     XXX         XXX         XXX        XXX         XXX         XXX                                                         XXX      XXX      XXX      XXX        XXX      XXX   
+ &kp COLON  &kp PRCNT   &kp FSLH  &kp STAR  &kp UNDER      XXX                                                         &kp O   &kp N7  &kp N8  &kp N9  &kp DLLR   XXX   
+ &kp TILDE   &kp EXCL     &kp LT    &kp GT  &kp EQUAL  &kp COMMA                                                      &kp X   &kp N4  &kp N5  &kp N6  &kp HASH   XXX   
+     XXX     &kp CARET  &kp MINUS  &kp PLUS    &kp DOT      XXX     ___      ___      ___      ___      ___      ___      &kp B   &kp N1  &kp N2  &kp N3    &kp AT   XXX   
+     XXX      &kp PIPE   &kp AMPS    ___        ___                ___      ___      ___      ___      ___      &kp N0   ___     ___      XXX        XXX      XXX   
             >;
         };
 
         nav_layer {
             bindings = <
-                &none     &none     &none      &none      &none                                                               &none      &none      &none      &none   &none
-                &none     &none     &none      &none      &none   &none                                             &none     &none      &none      &none      &none   &none
-                &none     &none     &none      &none      &none   &none                                             &none     &none      &none      &none      &none   &none
-                &none  &kp LGUI  &kp LALT  &kp LCTRL  &kp LSHFT   &none                                             &none  &kp LEFT   &kp DOWN     &kp UP  &kp RIGHT   &none
-                &none     &none     &none      &none      &none   &none   &none   &none   &none   &none   &none   &none   &none  &kp HOME  &kp PG_DN  &kp PG_UP    &kp END   &none
-                &none     &none     &none      &none      &none           &none   &none   &none   &none   &none   &none             &none      &none      &none      &none   &none
+                XXX        XXX        XXX         XXX         XXX                                                                  XXX         XXX         XXX         XXX      XXX   
+                XXX        XXX        XXX         XXX         XXX      XXX                                                XXX        XXX         XXX         XXX         XXX      XXX   
+                XXX        XXX        XXX         XXX         XXX      XXX                                                XXX        XXX         XXX         XXX         XXX      XXX   
+                XXX     &kp LGUI  &kp LALT  &kp LCTRL  &kp LSHFT   XXX                                                XXX     &kp LEFT   &kp DOWN     &kp UP  &kp RIGHT   XXX   
+                XXX        XXX        XXX         XXX         XXX      XXX      XXX      XXX      XXX      XXX      XXX      XXX      XXX     &kp HOME  &kp PG_DN  &kp PG_UP    &kp END   XXX   
+                XXX        XXX        XXX         XXX         XXX              XXX      XXX      XXX      XXX      XXX      XXX                XXX         XXX         XXX         XXX      XXX   
             >;
         };
 
         function_layer {
             bindings = <
-                &none   &none   &none   &none   &none                                                                                       &none         &none         &none    &none    &none
-                &none   &none   &none   &none   &none   &none                                                                       &none   &none  &kp C_BRI_DN  &kp C_BRI_UP    &none    &none
-                &none   &none   &none   &none   &none   &none                                                                       &none  &kp F7        &kp F8        &kp F9  &kp F10  &kp F13
-                &none   &none   &none   &none   &none   &none                                                                       &none  &kp F4        &kp F5        &kp F6  &kp F11  &kp F14
-                &none   &none   &none   &none   &none   &none   &none   &none   &none    &kp C_PP    &kp C_PREV    &kp C_NEXT       &none  &kp F1        &kp F2        &kp F3  &kp F12  &kp F15
-                &none   &none   &none   &none   &none           &none   &none   &none  &kp C_MUTE  &kp C_VOL_DN  &kp C_VOL_UP               &none      &kp C_RW      &kp C_FF    &none    &none
+                XXX      XXX      XXX      XXX      XXX                                                                                          XXX            XXX            XXX       XXX       XXX   
+                XXX      XXX      XXX      XXX      XXX      XXX                                                                          XXX      XXX     &kp C_BRI_DN  &kp C_BRI_UP    XXX       XXX   
+                XXX      XXX      XXX      XXX      XXX      XXX                                                                          XXX     &kp F7        &kp F8        &kp F9  &kp F10  &kp F13
+                XXX      XXX      XXX      XXX      XXX      XXX                                                                          XXX     &kp F4        &kp F5        &kp F6  &kp F11  &kp F14
+                XXX      XXX      XXX      XXX      XXX      XXX      XXX      XXX      XXX       &kp C_PP    &kp C_PREV    &kp C_NEXT       XXX     &kp F1        &kp F2        &kp F3  &kp F12  &kp F15
+                XXX      XXX      XXX      XXX      XXX              XXX      XXX      XXX     &kp C_MUTE  &kp C_VOL_DN  &kp C_VOL_UP               XXX         &kp C_RW      &kp C_FF    XXX       XXX   
             >;
         };
 
         magic_layer {
             bindings = <
-                &bt BT_CLR            &none            &none            &none            &none                                                                                     &none   &none   &none   &none  &bt BT_CLR_ALL
-                &none                 &none            &none            &none            &none            &none                                                            &none   &none   &none   &none   &none           &none
-                &sys_reset  &rgb_ug RGB_SPI  &rgb_ug RGB_SAI  &rgb_ug RGB_HUI  &rgb_ug RGB_BRI  &rgb_ug RGB_TOG                                                            &none   &none   &none   &none   &none      &sys_reset
-                &none       &rgb_ug RGB_SPD  &rgb_ug RGB_SAD  &rgb_ug RGB_HUD  &rgb_ug RGB_BRD  &rgb_ug RGB_EFF                                                            &none   &none   &none   &none   &none           &none
-                &bootloader           &none            &none            &none            &none            &none   &bt_2          &bt_3                &none   &none   &none   &none   &none   &none   &none   &none   &none     &bootloader
-                &none                 &none            &none            &none            &none                    &bt_0          &bt_1         &out OUT_USB   &none   &none   &none           &none   &none   &none   &none           &none
+                &bt BT_CLR            XXX               XXX               XXX               XXX                                                                                        XXX      XXX      XXX      XXX     &bt BT_CLR_ALL
+                XXX                    XXX               XXX               XXX               XXX               XXX                                                               XXX      XXX      XXX      XXX      XXX              XXX   
+                &sys_reset  &rgb_ug RGB_SPI  &rgb_ug RGB_SAI  &rgb_ug RGB_HUI  &rgb_ug RGB_BRI  &rgb_ug RGB_TOG                                                            XXX      XXX      XXX      XXX      XXX         &sys_reset
+                XXX          &rgb_ug RGB_SPD  &rgb_ug RGB_SAD  &rgb_ug RGB_HUD  &rgb_ug RGB_BRD  &rgb_ug RGB_EFF                                                            XXX      XXX      XXX      XXX      XXX              XXX   
+                &bootloader           XXX               XXX               XXX               XXX               XXX      &bt_2          &bt_3                XXX      XXX      XXX      XXX      XXX      XXX      XXX      XXX      XXX        &bootloader
+                XXX                    XXX               XXX               XXX               XXX                       &bt_0          &bt_1         &out OUT_USB   XXX      XXX      XXX              XXX      XXX      XXX      XXX              XXX   
             >;
         };
     };
