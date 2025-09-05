@@ -42,6 +42,21 @@ build expr *west_args:
         just _build_single "$board" "$shield" "$snippet" "$artifact" {{ west_args }}
     done
 
+# build glove80 and concatenate left+right firmware
+glove80-build *west_args:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    just _build_single "glove80_lh" "" "" "glove80_lh" {{ west_args }}
+    just _build_single "glove80_rh" "" "" "glove80_rh" {{ west_args }}
+    
+    mkdir -p "{{ out }}"
+    if [[ -f "{{ out }}/glove80_lh.uf2" && -f "{{ out }}/glove80_rh.uf2" ]]; then
+        cat "{{ out }}/glove80_lh.uf2" "{{ out }}/glove80_rh.uf2" > "{{ out }}/glove80_combined.uf2"
+        echo "Created: {{ out }}/glove80_combined.uf2"
+    else
+        echo "Error: Could not find both .uf2 firmware files to concatenate" >&2 && exit 1
+    fi
+
 # clear build cache and artifacts
 clean:
     rm -rf {{ build }} {{ out }}
