@@ -9,16 +9,22 @@ This is a minimal ZMK firmware configuration specifically for the Glove80 keyboa
 ```
 min-urob-zmk/
 ├── config/
-│   ├── base.keymap          # Main keymap with layers and behaviors
-│   ├── glove80.conf         # Glove80-specific hardware configuration
-│   ├── glove80.keymap       # Glove80 layout wrapper (includes base.keymap)
-│   ├── combos.dtsi          # Combo key definitions
-│   ├── leader.dtsi          # Leader key sequences
-│   ├── mouse.dtsi           # Smart mouse layer configuration
-│   └── west.yml             # ZMK dependencies and module versions
+│   ├── glove80.keymap       # Personal minimal Glove80 configuration with 6 layers
+│   ├── glove80.conf         # Glove80-specific hardware configuration  
+│   ├── bluetooth.dtsi       # Modular bluetooth behaviors (tap-dance profiles)
+│   └── west.yml             # ZMK dependencies using Moergo fork + urob modules
+├── config-urob/             # Original urob reference configuration (preserved)
+│   ├── base.keymap          # urob's main keymap with layers and behaviors
+│   ├── glove80.keymap       # urob's Glove80 layout wrapper
+│   ├── combos.dtsi          # urob's combo key definitions
+│   ├── leader.dtsi          # urob's leader key sequences  
+│   ├── mouse.dtsi           # urob's smart mouse layer configuration
+│   └── west.yml             # urob's original dependencies
 ├── build.yaml               # GitHub Actions build matrix (glove80_lh/glove80_rh only)
-├── Justfile                 # Build automation recipes
-├── flake.nix               # Nix development environment
+├── Justfile                 # Build automation recipes (WSL-compatible)
+├── flake.nix               # Nix development environment with XDG_RUNTIME_DIR fix
+├── glove80_ascii_gen.py     # Python ASCII art generator for Glove80 layouts
+├── glove80_ascii_gen.js     # JavaScript ASCII art generator for Glove80 layouts  
 └── draw/                   # Keymap visualization assets
 ```
 
@@ -26,50 +32,50 @@ min-urob-zmk/
 
 ### Architecture
 - **Glove80-only**: All non-Glove80 keyboards (Corneish Zen, Planck) have been removed
-- **Modular design**: Core layout in `base.keymap`, hardware-specific config in `glove80.keymap`
-- **Feature modules**: Combos, leader keys, and mouse functionality are separated into `.dtsi` files
-- **Module-driven**: Uses 6 of urob's ZMK modules for advanced functionality
+- **Personal minimal config**: New streamlined configuration in `config/` with 6 layers (BASE/SYM/NUM/NAV/FUN/MGC)
+- **Reference preservation**: Original urob config preserved in `config-urob/` for reference
+- **Modular bluetooth**: Bluetooth behaviors separated into `bluetooth.dtsi` for reusability  
+- **Module-driven**: Uses urob's zmk-helpers for key position definitions and clean syntax
+- **Moergo ZMK fork**: Uses Moergo's optimized ZMK fork (v25.08) instead of upstream
 
-### Core Features
-- **Timeless homerow mods**: Advanced HRM setup with balanced flavor, positional hold-tap
-- **Combo-based symbols**: No dedicated symbol layer, uses combos instead
-- **Smart layers**: Auto-deactivating Numword and Smart-mouse layers
-- **Magic thumb**: Repeat/Sticky-shift/Capsword on right thumb
-- **Leader sequences**: Unicode input and system commands via S+T combo
+### Current Configuration Features
+- **6-layer layout**: BASE, SYM, NUM, NAV, FUN, MGC layers with clear purposes
+- **Homerow mods**: Left/right HRM behaviors with balanced flavor and positional hold-tap
+- **Magic Shift**: Custom tap-dance shift behavior (single=one-shot, double=caps-word, shift+tap=caps-lock)
+- **Cancel key**: K_CANCEL for deactivating caps-word and sticky layers
+- **Bluetooth management**: 4 BT profiles with tap-dance behaviors (tap=connect, hold=disconnect)
+- **Magic button**: RGB status indicator for battery/bluetooth/caps lock (working)
+- **Layer-tap behaviors**: Dedicated left/right layer-tap behaviors with proper trigger positions
+- **zmk-helpers integration**: Uses urob's key position definitions (LT0, LM0, RT0, etc.)
+- **Optimized sticky keys**: Quick-release behavior for single-letter capitalization
 
-### urob's ZMK Modules Integration
+### Available urob's ZMK Modules (Reference)
 
-**1. zmk-helpers** - Simplifies configuration syntax
-- `ZMK_COMBO()` macro for easy combo definitions
-- `ZMK_HOLD_TAP()` macro for behavior creation
-- `MAKE_HRM()` custom macro for homerow mod generation
-- Key position labels (LT0-LT4, RT0-RT4, etc.)
+The following modules are available from urob's ecosystem but not currently used in the minimal config:
 
-**2. zmk-auto-layer** - Smart layer management
-- Powers the "Smart-Num" (Numword) functionality
+**1. zmk-helpers** - ✅ **ACTIVE** - Simplifies configuration syntax
+- Key position labels (LC5, LT0, LM0, RT0, etc.) for Glove80
+- Provides clean syntax for keymap definitions
+
+**2. zmk-auto-layer** - ⚪ Available - Smart layer management  
+- Powers "Smart-Num" (Numword) functionality in urob's config
 - Auto-deactivates layers when non-specified keys are pressed
-- `num_word NUM` behavior keeps NUM layer active while typing numbers
 
-**3. zmk-adaptive-key** - Context-aware key transformations
-- Powers the "Magic Shift" repeat/sticky-shift behavior
-- `shift_repeat` adapts based on previous keypress context
-- Transforms tap after alpha to repeat, otherwise sticky-shift
+**3. zmk-adaptive-key** - ⚪ Available - Context-aware key transformations
+- Powers "Magic Shift" repeat/sticky-shift behavior in urob's config
+- Adapts behavior based on previous keypress context
 
-**4. zmk-tri-state** - Three-stage interaction patterns
-- Powers window switcher (`swapper`) behavior
-- Powers smart-mouse auto-toggle functionality
+**4. zmk-tri-state** - ⚪ Available - Three-stage interaction patterns
+- Powers window switcher and smart-mouse functionality in urob's config
 - Stage 1: activate, Stage 2: continue, Stage 3: interrupt
 
-**5. zmk-leader-key** - Vim-style leader sequences
-- Activated by S+T combo (`&leader`)
-- German umlauts (A→ä, O→ö, U→ü, S→ß)
-- Greek letters for math (E A→α, E B→β, etc.)
-- System commands (USB, BLE, RESET, BOOT)
+**5. zmk-leader-key** - ⚪ Available - Vim-style leader sequences
+- Provides leader key functionality for Unicode input
+- Can be activated by combos for special character sequences
 
-**6. zmk-unicode** - Advanced Unicode input
-- German and Greek character definitions
+**6. zmk-unicode** - ⚪ Available - Advanced Unicode input
 - Cross-platform Unicode input (macOS/Linux/Windows)
-- `&uc UC_DE_AE` syntax for character codes
+- German, Greek, and other character definitions
 
 ### Build System
 - Uses `build.yaml` to define build targets (only `glove80_lh` and `glove80_rh`)
@@ -79,12 +85,26 @@ min-urob-zmk/
 
 ## Current Project State
 
-**Personal Configuration Status**: Building minimal Glove80-only config from scratch
-- Original urob config preserved in `config-urob/` for reference  
-- New personal config in `config/` with modular bluetooth behaviors
-- Using `zmk-helpers` key position definitions (LT0, LM0, etc.) for portability
+**Status**: ✅ **WORKING** - Full Glove80 configuration with Magic Shift successfully built and tested
 
-**Known Issues**: Just recipes fixed for WSL (XDG_RUNTIME_DIR=/tmp in flake.nix)
+### Key Accomplishments
+- ✅ **Build System**: Moergo ZMK fork integration complete (v25.08)
+- ✅ **WSL Compatibility**: Just recipes fixed (XDG_RUNTIME_DIR=/tmp in flake.nix)
+- ✅ **Key Position Mapping**: zmk-helpers integration working (LT0, LM0, RT0, etc.)
+- ✅ **Magic Button Fix**: RGB status indicators working correctly
+- ✅ **Modular Design**: Bluetooth behaviors extracted to reusable .dtsi file
+- ✅ **ASCII Art Generators**: Python and JavaScript tools for layout visualization (fixed alignment issues)
+- ✅ **Magic Shift Implementation**: Custom tap-dance shift behavior fully working
+- ✅ **Cancel Key**: K_CANCEL key for caps-word/sticky layer cancellation
+- ✅ **Optimized Sticky Keys**: Configured for single-letter capitalization with quick-release
+
+### Current Configuration
+- **Personal config**: `config/` contains working 6-layer Glove80 setup with Magic Shift
+- **Reference config**: `config-urob/` preserved for advanced features reference
+- **Magic Shift behaviors**: Single tap=one-shot shift, Double tap=caps-word, Shift+tap=caps-lock
+- **Timing optimizations**: Sticky keys (500ms timeout, quick-release), tap-dance (500ms window)
+- **Working features**: HRM, bluetooth profiles, layer-tap, magic status button, cancel key
+- **Ready for expansion**: Can easily add urob modules (combos, leader keys, etc.)
 
 ## Auto-Update Instructions
 
@@ -125,10 +145,11 @@ git status
 - Preserve the modular .dtsi structure
 
 ### 3. Key Files to Monitor
-- `config/base.keymap` - Main layout logic
-- `config/glove80.keymap` - Hardware wrapper
-- `config/*.dtsi` - Feature modules (combos, leader, mouse)
-- `config/west.yml` - Dependencies (check for version updates)
+- `config/glove80.keymap` - Personal minimal Glove80 configuration
+- `config/bluetooth.dtsi` - Modular bluetooth behaviors  
+- `config/west.yml` - Dependencies with Moergo ZMK fork + urob modules
+- `config-urob/base.keymap` - Reference: urob's main layout logic
+- `config-urob/*.dtsi` - Reference: urob's feature modules (combos, leader, mouse)
 
 ### 4. Before Making Changes
 - Read relevant config files to understand current implementation
@@ -142,38 +163,31 @@ git status
 
 ### 6. Common Tasks & Configuration Patterns
 
-#### Adding new combos:
-1. Edit `config/combos.dtsi`
-2. Follow existing ZMK_COMBO pattern:
-   ```c
-   ZMK_COMBO(name, &kp KEY, LT1 LT2, DEF NAV NUM, COMBO_TERM_FAST, COMBO_IDLE_FAST)
-   ```
-3. Use `COMBO_TERM_FAST/SLOW` and `COMBO_IDLE_FAST/SLOW` constants
-4. For HRM-overlapping combos, use 8-argument ZMK_COMBO version
+#### Current Configuration Pattern:
+1. **Main keymap**: Edit `config/glove80.keymap` 
+2. **Key positions**: Use zmk-helpers labels (LT0, LM0, RT0, RM0, etc.)
+3. **Homerow mods**: Defined in behaviors section with `balanced` flavor
+   - `tapping-term-ms = <280>`, `require-prior-idle-ms = <150>`
+   - Separate left/right behaviors with positional hold-tap
+4. **Layer structure**: 6 layers (BASE=0, SYM=1, NUM=2, NAV=3, FUN=4, MGC=5)
+5. **Magic Shift**: Custom tap-dance implementation using ZMK helper macros
+   - Hold-tap → Mod-morph → Tap-dance structure
+   - Timing: 500ms tap-dance window, 500ms sticky key timeout with quick-release
+6. **Cancel functionality**: K_CANCEL key for caps-word and sticky layer deactivation
+7. **Bluetooth**: Modular behaviors in `bluetooth.dtsi` with tap-dance patterns
 
-#### Adding leader sequences:
-1. Edit `config/leader.dtsi`
-2. Use ZMK_LEADER_SEQUENCE macro:
-   ```c
-   ZMK_LEADER_SEQUENCE(name, &behavior KEY, KEY_SEQUENCE)
-   ```
-3. Access via `&leader` (S+T combo)
+#### Adding urob's Advanced Features (Reference):
+1. **Combos**: Copy patterns from `config-urob/combos.dtsi`
+2. **Leader sequences**: Copy patterns from `config-urob/leader.dtsi` 
+3. **Smart behaviors**: Copy from `config-urob/base.keymap`
+4. **Auto-layer/Tri-state**: Reference urob's module usage patterns
+5. **Unicode**: Reference `config-urob/` for character definitions
 
-#### Modifying homerow mods:
-1. Edit `config/base.keymap` MAKE_HRM section
-2. Key parameters: `tapping-term-ms = <280>`, `require-prior-idle-ms = <150>`
-3. Uses `balanced` flavor with `hold-trigger-on-release`
-4. Positional hold-tap prevents same-hand false triggers
-
-#### Creating new behaviors:
-1. Use zmk-helpers macros: `ZMK_HOLD_TAP()`, `ZMK_MOD_MORPH()`, etc.
-2. Follow existing patterns in `base.keymap`
-3. Define aliases with `#define` for readability
-
-#### Smart layer configuration:
-1. Numword: Uses `zmk-auto-layer` module, triggered by `SMART_NUM`
-2. Smart-mouse: Uses `zmk-tri-state`, triggered by combo W+P
-3. Both auto-deactivate on non-specified keypresses
+#### ASCII Art Generation:
+1. **Python**: `python3 glove80_ascii_gen.py` for templates
+2. **JavaScript**: `node glove80_ascii_gen.js` for templates  
+3. **Usage**: `substituteBindings(template, your_80_bindings_array)`
+4. **Key mapping**: Uses urob's position labels (LC5, LT0, LM0, etc.)
 
 #### Updating dependencies:
 1. Check `config/west.yml` for module versions:
@@ -216,4 +230,4 @@ Tell Claude any of these to trigger an automatic update of this file:
 - "sync claude.md with project"
 - Or after making significant project changes, Claude should proactively ask: "Should I update CLAUDE.md to reflect these changes?"
 
-**Last Updated**: 2025-09-03 - Added urob ZMK module semantics, Moergo ZMK fork integration, and nix/direnv setup
+**Last Updated**: 2025-09-03 - Project enhanced: Working Glove80 config with Magic Shift, optimized ASCII generators, and K_CANCEL functionality
