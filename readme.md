@@ -1,6 +1,8 @@
+# Modified personal fork of:
+
 # urob's zmk-config
 
-This is my personal [ZMK firmware](https://github.com/zmkfirmware/zmk/)
+[ZMK firmware](https://github.com/zmkfirmware/zmk/)
 configuration for the Glove80 keyboard.
 
 My configuration currently builds against `v0.3` of upstream ZMK.
